@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cyber Logs Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            background: #0d1117;
+            color: #00ff9c;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        h2 {
+            text-shadow: 0 0 10px #00ff9c;
+        }
+
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 85%;
+        }
+
+        th, td {
+            border: 1px solid #00ff9c;
+            padding: 10px;
+        }
+
+        th {
+            background: black;
+        }
+
+        tr:hover {
+            background: #003322;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .chart-box {
+            width: 400px;
+            margin: 20px;
+            border: 1px solid #00ff9c;
+            padding: 20px;
+            box-shadow: 0 0 15px #00ff9c;
+        }
+
+        a {
+            color: #00ff9c;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>📊 CYBER ATTACK DASHBOARD</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Log</th>
+        <th>Threat</th>
+    </tr>
+
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.0 }}</td>
+        <td>{{ log.1 }}</td>
+        <td>{{ log.2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<div class="container">
+    <div class="chart-box">
+        <h3>📊 Attack Distribution</h3>
+        <canvas id="barChart"></canvas>
+    </div>
+
+    <div class="chart-box">
+        <h3>🥧 Attack Ratio</h3>
+        <canvas id="pieChart"></canvas>
+    </div>
+</div>
+
+<a href="/">⬅ Back</a>
+
+<script>
+    const threats = [];
+
+    {% for log in logs %}
+        threats.push("{{ log.2 }}");
+    {% endfor %}
+
+    const count = {};
+    threats.forEach(t => {
+        count[t] = (count[t] || 0) + 1;
+    });
+
+    const labels = Object.keys(count);
+    const values = Object.values(count);
+
+    // 📊 Bar Chart
+    new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Attack Count',
+                data: values
+            }]
+        }
+    });
+
+    // 🥧 Pie Chart
+    new Chart(document.getElementById('pieChart'), {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: values
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

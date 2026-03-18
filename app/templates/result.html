@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Result</title>
+    <style>
+        body {
+            background: #0d1117;
+            color: #00ff9c;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        .card {
+            margin: 100px auto;
+            padding: 30px;
+            border: 1px solid #00ff9c;
+            width: 60%;
+            box-shadow: 0 0 20px #00ff9c;
+        }
+
+        .danger {
+            color: red;
+            font-size: 22px;
+        }
+
+        .safe {
+            color: #00ff9c;
+            font-size: 22px;
+        }
+
+        a {
+            color: #00ff9c;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h2>🧠 Analysis Result</h2>
+
+        <p><b>Log:</b> {{ result.log }}</p>
+
+        {% if result.threat != "Normal" %}
+            <p class="danger">🚨 Threat Detected: {{ result.threat }}</p>
+        {% else %}
+            <p class="safe">✅ Safe Activity</p>
+        {% endif %}
+
+        <a href="/">⬅ Back</a>
+    </div>
+<h3>🌍 IP TRACKING</h3>
+
+{% if ip %}
+    <p><b>IP:</b> {{ ip.query }}</p>
+    <p><b>Country:</b> {{ ip.country }}</p>
+    <p><b>City:</b> {{ ip.city }}</p>
+    <p><b>ISP:</b> {{ ip.isp }}</p>
+
+    <iframe 
+        width="600" 
+        height="300" 
+        frameborder="0" 
+        style="border:0"
+        src="https://maps.google.com/maps?q={{ ip.lat }},{{ ip.lon }}&z=10&output=embed">
+    </iframe>
+
+{% else %}
+    <p>No IP detected in log</p>
+{% endif %}
+</body>
+</html>
